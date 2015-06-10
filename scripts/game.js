@@ -14,6 +14,8 @@ Game.draw = function() {
   for (var i=0; i < this.food.length; i++) {
     this.food[i].draw(this.context);
   }
+  // sort the entities by size so they get z indexed properly
+  this.entities.sort(function(a,b){return a.radius - b.radius});
   for (var i=0; i < this.entities.length; i++) {
     this.entities[i].draw(this.context);
   }
