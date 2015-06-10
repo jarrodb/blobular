@@ -21,8 +21,8 @@ Food.prototype.update = function() {
 function Circle(color) {
   this.x = Math.floor(Math.random() * (640 - 30));;
   this.y = Math.floor(Math.random() * (480 - 30));;
-  this.y_velocity = (Math.random() > 0.5 ? -1 : 1)+3;
-  this.x_velocity = (Math.random() > 0.5 ? -1 : 1)+3;
+  this.y_velocity = (Math.random() > 0.5 ? -1 : 1)*3;
+  this.x_velocity = (Math.random() > 0.5 ? -1 : 1)*3;
   this.max_velocity=4;
   this.decay_renew=30;
   this.decay=this.decay_renew;
@@ -83,17 +83,17 @@ Circle.prototype.update = function(food,entities) {
   } else if (this.x > 640) {
     this.x_velocity = this.x_velocity * -1;
   }
-  if(!this.decay--) {
+  if(!this.decay-- || this.x_velocity==0 || this.y_velocity==0) {
     this.decay=this.decay_renew;
     if (this.x_velocity!=0) {
       this.x_velocity += this.x_velocity > 0 ? -1 : 1;
     }else { 
-        this.x_velocity = (Math.random() > 0.5 ? -1 : 1)+3;
+        this.x_velocity = (Math.random() > 0.5 ? -1 : 1)*3;
     }
     if (this.y_velocity!=0) {
       this.y_velocity += this.y_velocity > 0 ? -1 : 1;
     } else {
-      this.y_velocity = (Math.random() > 0.5 ? -1 : 1)+3;
+      this.y_velocity = (Math.random() > 0.5 ? -1 : 1)*3;
     }
   }
   // update coordinates based on velocity
