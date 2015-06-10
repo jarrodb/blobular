@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Blobular</title>
-    <script type="text/javascript" charset="utf-8" src="scripts/circle.js"></script>
+    <script type="text/javascript" charset="utf-8" src="scripts/shapes.js"></script>
     <script type="text/javascript" charset="utf-8" src="scripts/game.js"></script>
   </head>
   <body>
@@ -10,10 +10,14 @@
 
     <script type="text/javascript" charset="utf-8">
 Game.initialize();
+      // add players
       var colors = ['green','red','blue','yellow'];
       var i = 4;
-      
       while (i--) Game.addCircle(colors[i]);
+
+      // add food
+      i = 40;
+      while (i--) Game.addFood();
 
       Game.run = (function() {
         var loops = 0, skipTicks = 1000 / Game.fps,
