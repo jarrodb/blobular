@@ -21,7 +21,8 @@ Food.prototype.update = function() {
 function Circle(color) {
   this.x = Math.floor(Math.random() * (640 - 30));;
   this.y = Math.floor(Math.random() * (480 - 30));;
-  this.velocity = Math.random() > 0.5 ? -1 : 1;
+  this.y_velocity = Math.random() > 0.5 ? -1 : 1;
+  this.x_velocity = Math.random() > 0.5 ? -1 : 1;
   this.color = color;
   this.radius = 20;
   console.log(arguments.length);
@@ -46,12 +47,18 @@ Circle.prototype.update = function(food) {
     }
   }
 
-
+  // screen edge  bounce checks
   if (this.y < 0) {
-    this.velocity = 1;
+    this.y_velocity = 1;
   } else if (this.y > 450) {
-    this.velocity = -1;
+    this.y_velocity = -1;
   }
-  
-  this.y += this.velocity;
+  if (this.x < 0) {
+    this.x_velocity = 1;
+  } else if (this.x > 640) {
+    this.x_velocity = -1;
+  }
+  // update coordinates based on velocity
+  this.y += this.y_velocity;
+  this.x += this.x_velocity;
 };
