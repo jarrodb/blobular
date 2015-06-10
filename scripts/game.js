@@ -24,7 +24,7 @@ Game.update = function() {
   // and food will be marked as eaten so it can be respawned upon
   // calling food update
   for (var i=0; i < this.entities.length; i++) {
-    this.entities[i].update(this.food);
+    this.entities[i].update(this.food,this.entities);
   }
   for (var i=0; i < this.food.length; i++) {
     this.food[i].update();

@@ -25,6 +25,7 @@ function Circle(color) {
   this.x_velocity = Math.random() > 0.5 ? -1 : 1;
   this.color = color;
   this.radius = 20;
+  this.eaten = false;
   console.log(arguments.length);
 };
 
@@ -38,12 +39,33 @@ Circle.prototype.draw = function(context) {
   context.stroke();
 };
 
-Circle.prototype.update = function(food) {
+Circle.prototype.update = function(food,entities) {
+  if(this.eaten==false){
   // do collision dectection with food
   for (var i=0; i < food.length; i++) {
     if(Math.pow((food[i].x - this.x),2) + Math.pow((food[i].y - this.y),2) < Math.pow(this.radius,2) ) {
       food[i].eaten=true;
       this.radius++;
+    }
+  }
+  // do collision detection with player entities
+  for (var i=0; i < entities.length; i++) {
+    if(entities[i].eaten==false){
+      // we are cheking if the CENTER of the entity is within our radius, so we are half covering them
+      var current=entities[i];
+      //console.log('processing collission against '+current.color);
+      var distance = Math.pow((current.x - this.x),2) + Math.pow((current.y - this.y),2);
+      var r_sq = Math.pow(this.radius,2);
+      //console.log('distance '+distance+' r_sq '+r_sq);
+      if(distance < r_sq) {
+        // we can only eat other entities if we are 20% larger
+        if(this.radius>current.radius*1.2){
+           console.log(this.color+' eating '+current.color);
+          entities[i].eaten=true;
+          // this is how you get huge
+          this.radius+=(entities[i].radius/2);
+        }
+      }
     }
   }
 
@@ -61,4 +83,10 @@ Circle.prototype.update = function(food) {
   // update coordinates based on velocity
   this.y += this.y_velocity;
   this.x += this.x_velocity;
+  } else {
+    // effectively wipe the entity off the screen on next draw
+    this.x=0;
+    this.y=0;
+    this.radius=0;
+  }
 };
