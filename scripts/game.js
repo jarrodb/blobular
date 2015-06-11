@@ -3,8 +3,8 @@ var Game = function(options) {
 
   // init defaults
   this.fps = options.fps || 50;
-  this.height = options.height || 480;
-  this.width = options.width || 640;
+  this.height = options.height || 576;
+  this.width = options.width || 1024;
   this.playerCount = options.entities || 4;
   this.foodCount = options.food || 40;
 

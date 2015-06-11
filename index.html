@@ -6,15 +6,16 @@
     <script type="text/javascript" charset="utf-8" src="scripts/game.js"></script>
   </head>
   <body>
-    <canvas id="viewport"></canvas>
-
+    <center>
+      <canvas id="viewport"></canvas>
+    </center>
     <script type="text/javascript" charset="utf-8">
       var game = new Game({
         entities: 4,
         food: 40,
         fps: 50,
-        height: 768,
-        width: 1024
+        height: 880,
+        width: 1720
       }).run();
 
       (function() {
