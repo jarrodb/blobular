@@ -6,7 +6,7 @@ var Game = function(options) {
   this.height = options.height || 576;
   this.width = options.width || 1024;
   this.playerCount = options.entities || 4;
-  this.foodCount = options.food || 40;
+  this.foodDensity = options.food || "sparse";
 
   // discover the canvas
   this.canvas = document.getElementById(options.viewport || "viewport");
@@ -24,7 +24,11 @@ var Game = function(options) {
   for (i = this.playerCount; i; i--)
     this.addCircle();
 
-  for (i = this.foodCount; i; i--)
+  // Calculate food count based on density relative to canvas
+  // factor determined by percentage of defaults
+  var factor = (this.foodDensity == "sparse") ? 0.0384 : 0.09;
+  var count = (this.height+this.width) * factor;
+  for (i = Math.floor(count); i; i--)
     this.addFood();
 
   this.connect();
