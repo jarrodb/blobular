@@ -54,19 +54,19 @@ var Circle = function(context) {
         }
       }
       // do collision detection with player entities
-      for (var i=0; i < entities.length; i++) {
-        if(entities[i].eaten==false){
+      for (var id in entities) {
+        var entity = entities[id];
+        if (entity.eaten == false) {
           // we are cheking if the CENTER of the entity is within our radius,
           //so we are half covering them
-          var current=entities[i];
-          //console.log('processing collission against '+current.color);
-          if(this.collisionWith(current)) {
+          //console.log('processing collission against '+entity.color);
+          if(this.collisionWith(entity)) {
             // we can only eat other entities if we are 20% larger
-            if(this.radius>current.radius*1.2){
-              console.log(this.color+' eating '+current.color);
-              entities[i].eaten=true;
+            if(this.radius>entity.radius*1.2){
+              console.log(this.color+' eating '+entity.color);
+              entity.eaten = true;
               // this is how you get huge
-              this.radius+=(entities[i].radius/2);
+              this.radius+=(entity.radius/2);
             }
           }
         }

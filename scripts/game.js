@@ -17,7 +17,8 @@ var Game = function(options) {
   this.canvas.width = this.context.width = this.width;
 
   // init arrays for game state
-  this.entities = [];
+  this.entities = {};
+  this.entityIds = [];
   this.food = [];
 
   for (i = this.playerCount; i; i--)
@@ -31,26 +32,28 @@ var Game = function(options) {
 
   // connect to server
   connect: function() {
-    this.entities[0].human = true;
-    this.entities[0].color = 'black';
+    var id = this.entityIds[0];
+    var entity = this.entities[id];
+    console.log(entity);
+    entity.human = true;
+    entity.color = 'black';
 
-    _this = this;
     //http://stackoverflow.com/questions/1402698/binding-arrow-keys-in-js-jquery
     // simulate receiving directions to control the first entity element
     document.onkeydown = function(e) {
       e = e || window.event;
       switch(e.which || e.keyCode) {
       case 37: // left
-        _this.entities[0].x_velocity--;
+        entity.x_velocity--;
         break;
       case 38: // up
-        _this.entities[0].y_velocity--;
+        entity.y_velocity--;
         break;
       case 39: // right
-        _this.entities[0].x_velocity++;
+        entity.x_velocity++;
         break;
       case 40: // down
-        _this.entities[0].y_velocity++;
+        entity.y_velocity++;
         break;
       default: return; // exit this handler for other keys
       }
@@ -62,22 +65,26 @@ var Game = function(options) {
     this.context.clearRect(0, 0, this.width, this.height);
     // draw food first so it z indexes below players
     for (var i=0; i < this.food.length; i++) {
-      this.food[i].draw(this.context);
+      this.food[i].draw();
     }
     // sort the entities by size so they get z indexed properly
-    this.entities.sort(function(a,b){return a.radius - b.radius});
-    for (var i=0; i < this.entities.length; i++) {
-      this.entities[i].draw(this.context);
-    }
+    var _this = this;
+    this.entityIds.sort(function(a,b){
+        return _this.entities[a].radius - _this.entities[b].radius;
+    });
+    this.entityIds.forEach(function(e, idx, arr) {
+        _this.entities[e].draw();
+    });
   },
 
   update: function() {
     // update players first b/c collision detection will happen here
     // and food will be marked as eaten so it can be respawned upon
     // calling food update
-    for (var i=0; i < this.entities.length; i++) {
-      this.entities[i].update(this.food,this.entities);
-    }
+    var _this = this;
+    this.entityIds.forEach(function(e, idx, arr) {
+      _this.entities[e].update(_this.food,_this.entities);
+    });
     for (var i=0; i < this.food.length; i++) {
       this.food[i].update();
     }
@@ -106,8 +113,19 @@ var Game = function(options) {
   },
 
   addCircle: function() {
-    this.entities.push(new Circle(this.context));
-  }
+    var uuid = this.guid();
+    this.entityIds.push(uuid);
+    this.entities[uuid] = new Circle(this.context);
+  },
 
+  guid: function() {
+    function s4() {
+      return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+      s4() + '-' + s4() + s4() + s4();
+    }
 }
 
