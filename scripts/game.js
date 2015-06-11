@@ -34,7 +34,6 @@ var Game = function(options) {
   connect: function() {
     var id = this.entityIds[0];
     var entity = this.entities[id];
-    console.log(entity);
     entity.human = true;
     entity.color = 'black';
 
