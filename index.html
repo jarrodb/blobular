@@ -6,59 +6,26 @@
     <script type="text/javascript" charset="utf-8" src="scripts/game.js"></script>
   </head>
   <body>
-    <canvas id="viewport" height="480" width="640"></canvas>
+    <canvas id="viewport"></canvas>
 
     <script type="text/javascript" charset="utf-8">
-Game.initialize();
-      // add players
-      var colors = ['green','red','blue','yellow'];
-      var i = 4;
-      while (i--) Game.addCircle(colors[i]);
+      var game = new Game({
+        entities: 4,
+        food: 40,
+        fps: 50,
+        height: 768,
+        width: 1024
+      }).run();
 
-      // add food
-      i = 40;
-      while (i--) Game.addFood();
-
-      Game.run = (function() {
-        var loops = 0, skipTicks = 1000 / Game.fps,
-            maxFrameSkip = 10,
-            nextGameTick = (new Date).getTime();
-
-        return function() {
-          loops = 0;
-
-          while ((new Date).getTime() > nextGameTick) {
-            Game.update();
-            nextGameTick += skipTicks;
-            loops++;
-          }
-
-          Game.draw();
-        };
-      })();
-      
       (function() {
-        var onEachFrame;
-        if (window.webkitRequestAnimationFrame) {
-          onEachFrame = function(cb) {
-            var _cb = function() { cb(); webkitRequestAnimationFrame(_cb); }
-            _cb();
-          };
-        } else if (window.mozRequestAnimationFrame) {
-          onEachFrame = function(cb) {
-            var _cb = function() { cb(); mozRequestAnimationFrame(_cb); }
-            _cb();
-          };
-        } else {
-          onEachFrame = function(cb) {
-            setInterval(cb, 1000 / 60);
-          }
-        }
-        
+        var onEachFrame = function(cb) {
+          var _cb = function() { cb(); requestAnimationFrame(_cb); }
+          _cb();
+        };
         window.onEachFrame = onEachFrame;
       })();
 
-      window.onEachFrame(Game.run);
+      window.onEachFrame(game);
     </script>
   </body>
 </html>
