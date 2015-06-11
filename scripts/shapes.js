@@ -99,13 +99,13 @@ var Circle = function(context) {
           if (this.x_velocity!=0) {
             this.x_velocity += this.x_velocity > 0 ? -1 : 1;
           } else {
-            this.x_velocity = (Math.random() > 0.5 ? -1 : 1)*3;
+            this.x_velocity = (Math.random() > 0.5 ? -1 : 1)*Math.floor(Math.random()*100%4);
           }
 
           if (this.y_velocity!=0) {
             this.y_velocity += this.y_velocity > 0 ? -1 : 1;
           } else {
-            this.y_velocity = (Math.random() > 0.5 ? -1 : 1)*3;
+            this.y_velocity = (Math.random() > 0.5 ? -1 : 1)*Math.floor(Math.random()*100%4);
           }
         }
 
