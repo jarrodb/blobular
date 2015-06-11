@@ -72,39 +72,44 @@ var Circle = function(context) {
         }
       }
 
-      // screen edge  bounce checks
+      // update coordinates based on velocity
+      this.y += this.y_velocity;
+      this.x += this.x_velocity;
+
+      // screen edge bounce checks and position readjustment
       if (this.y < 0) {
         this.y_velocity = this.y_velocity * -1;
+        this.y = 0 - this.y;
       } else if (this.y > (this.context.height - 30)) {
         this.y_velocity = this.y_velocity * -1;
+        this.y = (this.context.height - 30) - (this.y - (this.context.height - 30));
       }
       if (this.x < 0) {
         this.x_velocity = this.x_velocity * -1;
+        this.x = 0 - this.x;
       } else if (this.x > this.context.width) {
         this.x_velocity = this.x_velocity * -1;
+        this.x = this.context.width - (this.x - this.context.width);
       }
 
       if (!this.human) { // temp
 
-      if(!this.decay-- || this.x_velocity==0 || this.y_velocity==0) {
-        this.decay=this.decay_renew;
-        if (this.x_velocity!=0) {
-          this.x_velocity += this.x_velocity > 0 ? -1 : 1;
-        } else {
-          this.x_velocity = (Math.random() > 0.5 ? -1 : 1)*3;
+        if(!this.decay-- || this.x_velocity==0 || this.y_velocity==0) {
+          this.decay=this.decay_renew;
+          if (this.x_velocity!=0) {
+            this.x_velocity += this.x_velocity > 0 ? -1 : 1;
+          } else {
+            this.x_velocity = (Math.random() > 0.5 ? -1 : 1)*3;
+          }
+
+          if (this.y_velocity!=0) {
+            this.y_velocity += this.y_velocity > 0 ? -1 : 1;
+          } else {
+            this.y_velocity = (Math.random() > 0.5 ? -1 : 1)*3;
+          }
         }
 
-        if (this.y_velocity!=0) {
-          this.y_velocity += this.y_velocity > 0 ? -1 : 1;
-        } else {
-          this.y_velocity = (Math.random() > 0.5 ? -1 : 1)*3;
-        }
       }
-
-      }
-      // update coordinates based on velocity
-      this.y += this.y_velocity;
-      this.x += this.x_velocity;
     } else {
       // effectively wipe the entity off the screen on next draw
       this.x=0;
